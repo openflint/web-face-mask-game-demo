@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>receiver</title>
+        <meta charset="utf-8"/>
+    </head>
+    <style type="text/css">
+        body{margin: 0;}
+        #image{position: absolute;opacity: 0;left: 0; top: 0;}
+    </style>
+    <body>
+        <canvas id="canvas"></canvas>
+
+        <img id="image" src="#" alt="" />
+    </body>
+    <script src="assets/libs/jquery.js"></script>
+    <script src="assets/libs/facepp-sdk.js"></script>
+    <script>
+        "use strict"
+        function imageDataFormat(imgData){
+            var data = atob(imgData.substring( "data:image/png;base64,".length ));
+            var asArray = new Uint8Array(data.length);
+            for(var i = 0, len = data.length; i < len; ++i){
+                asArray[i] = data.charCodeAt(i);    
+            }
+            var blob = new Blob([ asArray.buffer ], {type: "image/png"});
+            return blob;
+        }
+        var FaceppSDK = function(){
+            var self = this;
+            var apiKey = "fc9ee3d9b48ed027a7cedf27a8fe2434",
+                apiSecret = "3cnNalC9OF09E58R0jf4Cpu42t0WJBGR";
+
+            apiKey = "9324fbaf5b1a3e206c7ed4171b0ff469";
+            apiSecret = "pRwuUwQybWKvRN9eaRSoAHXW23aT7u4k";
+
+            self.detect = function(imgdata){
+                var api = new FacePP(apiKey, apiSecret);
+                api.request("detection/detect", {
+                    img: imgdata
+
+                }, function(err, result){
+                    if (err) {
+                        console.info(err);
+                        return;
+                    }
+                    ("onresult" in self)&& (self.onresult(result));
+                    console.info("onresult------------------>", result);
+                });
+            };
+
+            self.on = function(type, func){
+                self["on"+type] = func;
+            };
+        }
+
+        var Mask = function(){
+            var self = this;
+            var img = document.getElementById("image"),
+                imgEyeLeft = new Image(),
+                imgEyeRight = new Image(),
+                canvas = document.getElementById("canvas");
+
+            var ctx = canvas.getContext("2d");
+
+            img.onload = function(){
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            };
+            self.setImage = function(imgData){
+                img.src = imgData;
+            };
+
+            self.wear = function(result, maskId){
+                console.info("result.face---------------->", result.face);
+                if(result.face.length==0){
+                    console.info("no face found...");
+                }else{
+                    if(typeof(maskId)=="undefined"){
+                        maskId = 1;
+                    }
+                    imgEyeLeft.src = "assets/imgs/eyes/"+maskId+"-L.png";
+                    imgEyeRight.src = "assets/imgs/eyes/"+maskId+"-R.png";
+
+                    for(var i=0; i<result.face.length; i++){
+                        var face = result.face[i];
+                        var eyePosition = {};
+                            eyePosition.leftX = face.position.eye_left.x*result.img_width/100 - imgEyeLeft.width/2;
+                            eyePosition.leftY = face.position.eye_left.y*result.img_height/100 - imgEyeLeft.height/2;
+
+                            eyePosition.rightX = face.position.eye_right.x*result.img_width/100 - imgEyeRight.width/2;
+                            eyePosition.rightY = face.position.eye_right.y*result.img_height/100 - imgEyeRight.height/2;
+
+                            console.info("reyePosition---------------->", eyePosition);
+                            ctx.drawImage(imgEyeLeft, eyePosition.leftX, eyePosition.leftY);
+                            ctx.drawImage(imgEyeRight, eyePosition.rightX, eyePosition.rightY);
+                    }
+                }
+            };
+
+            self.on = function(type, func){
+                self["on"+type] = func;
+            };
+        };
+        var faceppSDK = new FaceppSDK(),
+            mask = new Mask();
+
+        faceppSDK.on("result", function(result){
+            console.info("------------------>result: ", result);
+            mask.wear(result);
+        });
+
+
+        var wsServer = "ws://127.0.0.1:9431/receiver";
+        var ws = new WebSocket(wsServer);
+        ws.onopen = function (evt) {
+            console.info("--------->receiver connected");
+        }; 
+        ws.onmessage = function(evt) {
+          var msg = JSON.parse(evt.data);
+            if(msg['type']=='img'){
+                var imgBlob = imageDataFormat(msg['data']);
+                mask.setImage(msg['data']);
+                faceppSDK.detect(imgBlob);
+            }
+        };
+    </script>
+</html>
