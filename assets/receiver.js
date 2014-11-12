@@ -113,8 +113,8 @@ var FaceppSDK = function(){
         }, function(err, result){
             if (err) {
                 console.info(err);
-                    gameStatus = "NET_ERROR";
-                    appControl.send({"type": "game_status", "data": gameStatus});
+                gameStatus = "NET_ERROR";
+                appControl.send({"type": "game_status", "data": gameStatus});
                 return;
             }
             ("onresult" in self)&& (self.onresult(result));
