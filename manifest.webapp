@@ -6,10 +6,10 @@
         "128": "/assets/imgs/icon-128.png",
         "64": "/assets/imgs/icon-64.png"
     },
-    "launch_path": "/sender-phone.html",
+    "launch_path": "/sender.html",
     "developer": {
         "name": "face mask game",
-        "url": "http://your-homepage-here.org"
+        "url": "http://openflint.github.io/web-face-mask-game-demo/sender.html"
     },
     "default_locale": "en",
     "type": "privileged",
