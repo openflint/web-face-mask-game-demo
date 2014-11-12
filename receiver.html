@@ -3,58 +3,8 @@
         <title>receiver</title>
         <meta charset="utf-8"/>
     </head>
-    <style type="text/css">
-        @-moz-keyframes show {
-            from {opacity: 0;}
-            to {opacity: 0.9;}
-        }
-        @-webkit-keyframes show {
-            from {opacity: 0;}
-            to {opacity: 0.9;}
-        }
-
-        @-moz-keyframes alert-show {
-            from {opacity: 0;top:-30px;}
-            to {opacity: 1;top:0;}
-        }
-        @-webkit-keyframes alert-show {
-            from {opacity: 0;top:-30px;}
-            to {opacity: 1;top:0;}
-        }
-
-        @-moz-keyframes alert-hide {
-            from {opacity: 1; top:0;}
-            to {opacity: 0; top:-30px;}
-        }
-        @-webkit-keyframes alert-hide {
-            from {opacity: 1; top:0;}
-            to {opacity: 0; top:-30px;}
-        }
-
-        html{}
-        body{margin: 0;}
-            body.bg-no{background-image: url("assets/imgs/bg/no.jpg");}
-            body.bg-all{background-image: url("assets/imgs/bg/all.jpg");}
-            body.bg-f-1{background-image: url("assets/imgs/bg/f-1.jpg");}
-            body.bg-f-2{background-image: url("assets/imgs/bg/f-2.jpg");}
-            body.bg-f-3{background-image: url("assets/imgs/bg/f-3.jpg");}
-            body.bg-m-1{background-image: url("assets/imgs/bg/m-1.jpg");}
-            body.bg-m-2{background-image: url("assets/imgs/bg/m-2.jpg");}
-            body.bg-m-3{background-image: url("assets/imgs/bg/m-3.jpg");}
-            body.bg-m-4{background-image: url("assets/imgs/bg/m-4.jpg");}
-            body.bg-m-5{background-image: url("assets/imgs/bg/m-5.jpg");}
-
-        #image{position: absolute;opacity: 0;left: 0; top: 0;z-index: 1;}
-        #canvas{border-radius: 0;box-shadow: 1em 0 6em #636363;opacity: 0;position: absolute;z-index: 999;left: 50%;bottom: 0;}
-            #canvas.show{-moz-animation: show 2s;-webkit-animation: show 2s;opacity: 0.9;}
-
-        .alert{position: absolute;z-index: 999;right: 0;width: 250px;height: 70px;right: 10%;}
-            .alert.show{-moz-animation: alert-show 0.6s;-webkit-animation: alert-show 0.6s;top: 0;opacity: 1;}
-            .alert.hide{-moz-animation: alert-hide 0.6s;-webkit-animation: alert-hide 0.6s;top:-30px;opacity: 0;}
-            .alert .alert-bg{width: 250px;height: 70px;background: #FFF;opacity: 0.8;position: absolute;left: 0;top:0;}
-            .alert .alert-text{position: absolute;left: 0;top:0;width: 250px;height: 70px;text-align: center;line-height: 70px;font-size: 1.5em;color: #c16a10;}
-    </style>
-    <body class="bg-all">
+    <link rel="stylesheet" type="text/css" href="assets/receiver.css">
+    <body class="bg-no">
         <canvas id="canvas"></canvas>
         <img id="image" src="#" alt=""/>
         <div id="alert" class="alert hide">
@@ -62,6 +12,7 @@
             <div id="alert-text" class="alert-text"></div>
         </div>
     </body>
+    <script src="http://openflint.github.io/flint-receiver-sdk/receiver.js"></script>
     <script src="assets/libs/facepp-sdk.js"></script>
     <script src="assets/receiver.js"></script>
 </html>

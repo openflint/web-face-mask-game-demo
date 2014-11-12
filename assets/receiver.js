@@ -162,7 +162,20 @@ faceppSDK.on("result", function(result){
     }
 });
 
+window.onload = function(){
+    var receiverDaemon = new ReceiverDaemon("~facemaskgame");
+    var receiverDaemon = new ReceiverDaemon("~browser");
 
+    var channel = receiverDaemon.createMessageChannel("ws");
+
+    channel.on("message", function(senderId, msgType, msg){
+        console.info("found data...........", msg);
+    });
+    // channel.send(data);
+    receiverDaemon.open();
+
+};
+/*
 var wsServer = "ws://127.0.0.1:9431/receiver";
 var ws = new WebSocket(wsServer);
 ws.onopen = function (evt) {
@@ -178,3 +191,4 @@ ws.onmessage = function(evt) {
         mask.wear(faceppSDK.result, msg["data"]["maskId"]);
     }
 };
+*/
