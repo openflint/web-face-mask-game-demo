@@ -168,6 +168,7 @@ var GamePageView = function(){
     };
 };
 
+////////////////common app control code///////////////////////////
 function showAlert(msg){
     var errbox = document.getElementById("error"),
         bg = document.getElementById("error-bg"),
@@ -193,18 +194,9 @@ function hideAlert(){
     };
 }
 
-window.onload = function(){
+function appControl(appid){
     window.windowWidth = document.body.offsetWidth;
     window.windowHeight = window.innerHeight;
-
-    var gamePageView = new GamePageView();
-
-    gamePageView.init();
-    if(isFirefoxOs){
-        var camera = new PhoneCamera();
-    }else{
-        var camera = new BrowserCamera();
-    }
 
     hideAlert();
     var eleOpenBtn = document.getElementById("open-btn"),
@@ -220,7 +212,7 @@ window.onload = function(){
             }
             // I can not get CROS error. so you must confirmed the ip address right
             var deviceIp = eleDongleIpInput.value;
-            window.senderDaemon = new SenderDaemon(deviceIp, "~browser");
+            window.senderDaemon = new SenderDaemon(deviceIp, appid);
             // communicate();
             window.senderDaemon.openApp(appUrl, -1, true);
             return;
@@ -236,4 +228,18 @@ window.onload = function(){
             openApp();
         }
     };
+};
+///////////////////////////////////////////
+
+window.onload = function(){
+    var gamePageView = new GamePageView();
+
+    gamePageView.init();
+    if(isFirefoxOs){
+        var camera = new PhoneCamera();
+    }else{
+        var camera = new BrowserCamera();
+    }
+
+    appControl("~facemaskgame");
 };

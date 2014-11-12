@@ -164,7 +164,6 @@ faceppSDK.on("result", function(result){
 
 window.onload = function(){
     var receiverDaemon = new ReceiverDaemon("~facemaskgame");
-    var receiverDaemon = new ReceiverDaemon("~browser");
 
     var channel = receiverDaemon.createMessageChannel("ws");
 
