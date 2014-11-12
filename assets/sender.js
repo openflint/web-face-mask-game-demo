@@ -69,7 +69,11 @@ var AppManager = function(appid){
         eleInputareaBack = document.getElementById("inputarea-bg"),
         eleInputarea = document.getElementById("inputarea"),
         eleOpenBtn = document.getElementById("open-btn"),
-        eleDongleIpInput = document.getElementById("dongle-ip-input");
+        eleDongleIpInput = document.getElementById("dongle-ip-input"),
+
+        eleCloseAppBtn = document.getElementById("close-app-btn");
+
+        
 
     self.showError = function(msg){
         errtext.innerHTML = msg;
@@ -117,13 +121,19 @@ var AppManager = function(appid){
                         ("onmessage" in self)&&(self.onmessage(jsonObject));
                     }
                 });
+                eleCloseAppBtn.className = "close-app-btn";
             });
+
             senderDaemon.openApp(appUrl, -1, true);
             return;
         }else{
             self.showError("IP address error");
         }
-    }
+    };
+
+    self.closeApp = function(){
+        senderDaemon.closeApp();
+    };
 
     self.on = function(type, func){
         self["on"+type] = func;
@@ -140,6 +150,14 @@ var AppManager = function(appid){
 
     self.hideError();
     eleDongleIpInput.focus();
+
+    eleCloseAppBtn.onclick = function(){
+        self.closeApp();
+        eleCloseAppBtn.className = "close-app-btn hide";
+        setTimeout(function(){
+            window.location.reload();
+        },1000);
+    };
 }
 
 ///////////////////////////////////////////
