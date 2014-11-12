@@ -1,0 +1,20 @@
+{
+    "name":"facemask",
+    "description":"face mask game",
+    "icons": {
+        "512": "/assets/imgs/icon-512.png",
+        "128": "/assets/imgs/icon-128.png",
+        "64": "/assets/imgs/icon-64.png"
+    },
+    "launch_path": "/sender-phone.html",
+    "developer": {
+        "name": "face mask game",
+        "url": "http://your-homepage-here.org"
+    },
+    "default_locale": "en",
+    "type": "privileged",
+    "permissions": {
+        "systemXHR": { "description": "Required to make Ajax Calls over the Network" }
+    },
+    "orientation":["portrait-primary"]
+}

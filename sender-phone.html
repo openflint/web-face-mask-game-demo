@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>sender</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
+    </head>
+    <body class="">
+        <div class="main">
+            <div id="browser-capture" class="capture-area hide">
+                <div class="video-area">
+                    <video id="video"></video>
+                </div>
+                <div class="btn-area">
+                    <span id="btn-capture-browser" class="btn-capture" type="button"></span>
+                </div>
+            </div>
+
+            <div id="ffphone-capture" class="capture-area hide">
+                <div id="pix-area"></div>
+                <div class="btn-area">
+                    <span id="btn-capture-ffphone" class="btn-capture" type="button"></span>
+                </div>
+            </div>
+            
+            <div id="masks" class="masks">
+                <div id="masks-inner" class="inner">
+                    
+                </div>
+            </div>
+
+            <div id="inputarea-bg" class="inputarea bg"></div>
+            <div id ="inputarea" class="inputarea">
+                <input id="dongle-ip-input" type="text" value="" placeholder="Your matchstick ip..."/>
+                <span id="open-btn" class="open-btn btn">Open!</span>
+            </div>
+
+            <div class="hide">
+                <div id="temp-mask">
+                    <div class="item" mask-id="##id##">
+                        <img src="assets/imgs/eyes/##id##.png"/>
+                    </div>
+                </div>
+            </div>
+            <div id="error" class="error">
+                <div id="error-bg" class="error-bg"></div>
+                <div id="error-content" class="error-content">
+                    <p id="error-text"></p>
+                    <p class="notes">touch/click to close!</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="http://openflint.github.io/flint-web-sender-sdk/sender.js"></script>
+    <script src="assets/sender.js"></script>
+</html>
