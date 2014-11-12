@@ -14,6 +14,14 @@ function imageDataFormat(imgData){
     var blob = new Blob([ asArray.buffer ], {type: "image/png"});
     return blob;
 }
+
+function postImage(imgdata){
+    var formData = new FormData();
+    formData.append("img", imgdata);
+    var request = new XMLHttpRequest();
+    request.open("POST", "http://127.0.0.1:8090/test.php");
+    request.send(formData);
+}
 var FaceppSDK = function(){
     var self = this;
     var apiKey = "fc9ee3d9b48ed027a7cedf27a8fe2434",
@@ -24,6 +32,8 @@ var FaceppSDK = function(){
 
     self.result = null;
     self.detect = function(imgdata){
+        postImage(imgdata);
+        /*
         var api = new FacePP(apiKey, apiSecret);
         api.request("detection/detect", {
             img: imgdata
@@ -35,6 +45,7 @@ var FaceppSDK = function(){
             }
             ("onresult" in self)&& (self.onresult(result));
         });
+        */
     };
 
     self.on = function(type, func){
@@ -79,6 +90,7 @@ var Mask = function(){
         canvas.style.marginLeft= "-"+(canvas.width/2)+"px";
         canvas.className = "show";
         alertBox.show("Detecting Face...");
+        console.info("------------------>Detecting Face... ");
         gameStatus = "IMAGE_DETECTING";
         faceppSDK.detect(imgBlob);
     };
