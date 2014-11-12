@@ -10,7 +10,7 @@ body{margin: 0;}
                 .capture-area .btn-area .btn-capture:hover{background-position: -111px 0;}
     .masks{overflow: auto;background: #b6b6b6;opacity: 0.8;}
         .masks .inner{width: 1800px;}
-            .masks .inner .item{float: left;margin-left: 20px;cursor: pointer;}
+            .masks .inner .mask-item{float: left;margin-left: 20px;cursor: pointer;}
 
 
 .inputarea{position: fixed;left: 0;right: 0;top: 0;height: 100px;z-index: 5;text-align: center;}

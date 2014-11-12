@@ -166,12 +166,14 @@ window.onload = function(){
     var receiverDaemon = new ReceiverDaemon("~facemaskgame"),
         channel = receiverDaemon.createMessageChannel("ws");
     channel.on("message", function(senderId, msgType, msg){
-        console.info("found data...........", msg.data);
-        var msg = JSON.parse(msg.data);
-        if(msg["type"]=="img"){
-            mask.setImage(msg["data"]);
-        }else if(msg["type"]=="mask"){
-            mask.wear(faceppSDK.result, msg["data"]["maskId"]);
+        if("data" in msg){
+            console.info("found data...........", msg.data);
+            var msg = JSON.parse(msg.data);
+            if(msg["type"]=="img"){
+                mask.setImage(msg["data"]);
+            }else if(msg["type"]=="mask"){
+                mask.wear(faceppSDK.result, msg["data"]["maskId"]);
+            }
         }
     });
     // channel.send(data);

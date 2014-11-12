@@ -178,7 +178,6 @@ var BrowserCamera = function(){
         console.info("-----------------------------snap------------->", JSON.stringify(data));
     
         window.appManager.send(JSON.stringify(data));
-
         self.stop();
     }
 
@@ -213,9 +212,7 @@ var PhoneCamera = function(){
             pixArea.appendChild(img);
             
             var data = imageEncode(img);
-            
-            // todo
-            // window.appManager.send(JSON.stringify(data));
+            window.appManager.send(JSON.stringify(data));
         };
         pick.onerror = function () {
             console.info("Can't view the image!");
@@ -240,6 +237,20 @@ var GamePageView = function(){
             html += temp.replaceAll("##id##", masks[i]);
         };
         masksInner.innerHTML = html;
+
+        var maskItems = getElementsByClass("mask-item", "div");
+        console.info(maskItems);
+        for(var i=0;i<maskItems.length;i++){
+            maskItems[i].onclick = function(){
+                var data = {
+                    "type": "mask",
+                    "data": {
+                        "maskId": this.getAttribute("mask-id")
+                    }
+                };
+                window.appManager.send(JSON.stringify(data));
+            };
+        }
 
         if(isFirefoxOs){
             ffphoneCapture.className = "capture-area";
@@ -267,7 +278,6 @@ window.onload = function(){
 
     window.appManager = new AppManager("~facemaskgame");
     window.appManager.on("appopened", function(){
-        console.info("-000000000000000000000000000000000000---> on opened.....");
         if(isFirefoxOs){
             var camera = new PhoneCamera();
         }else{
