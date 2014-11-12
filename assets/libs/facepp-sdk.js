@@ -15,8 +15,8 @@
       }
       this.sessionCheck = __bind(this.sessionCheck, this);
       defaults = {
-        // apiURL: 'http://apius.faceplusplus.com/v2',
-        apiURL: 'http://apicn.faceplusplus.com',
+        apiURL: 'http://apius.faceplusplus.com/v2',
+        // apiURL: 'http://apicn.faceplusplus.com',
         sessionInterval: 500,
         requestTimeout: 10 * 1000,
         ajaxAdapter: 'FormData' in window ? 'XMLHttpRequest' : 'jQuery',

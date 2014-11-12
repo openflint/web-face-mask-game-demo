@@ -1,3 +1,21 @@
+@-moz-keyframes alert-show {
+    from {opacity: 0;top:-30px;}
+    to {opacity: 1;top:0;}
+}
+@-webkit-keyframes alert-show {
+    from {opacity: 0;top:-30px;}
+    to {opacity: 1;top:0;}
+}
+
+@-moz-keyframes alert-hide {
+    from {opacity: 1; top:0;}
+    to {opacity: 0; top:-30px;}
+}
+@-webkit-keyframes alert-hide {
+    from {opacity: 1; top:0;}
+    to {opacity: 0; top:-30px;}
+}
+
 html{background-image: url("imgs/bg/sender.jpg");}
 body{margin: 0;}
 .hide{display: none;}
@@ -8,6 +26,7 @@ body{margin: 0;}
         .capture-area .btn-area{position: absolute;left: 0;right:0;bottom: 10px;text-align: center;}
             .capture-area .btn-area .btn-capture{display: inline-block;width:110px;height: 110px;background-image: url("imgs/btn-c.png");background-position: 0 0;cursor: pointer;}
                 .capture-area .btn-area .btn-capture:hover{background-position: -111px 0;}
+                    .capture-area .btn-area .btn-capture.on{background-position: -111px 0;}
     .masks{overflow: auto;background: #b6b6b6;opacity: 0.8;}
         .masks .inner{width: 1800px;}
             .masks .inner .mask-item{float: left;margin-left: 20px;cursor: pointer;}
@@ -23,3 +42,9 @@ body{margin: 0;}
     .error .error-bg{width: 100%;height: 100%;background: #000;opacity: 0.6;z-index: 998;position: absolute;left: 0;top: 0;}
     .error .error-content{background: #FFF;z-index: 999;position: absolute;height: 100px;width: 250px;text-align: center;font-size: 25px;color: #ff8f00;border-radius: 5px;}
         .error .error-content .notes{font-size: 14px;color: #666;text-align: right;padding-right: 10px;}
+
+.alert{position: absolute;z-index: 999;right: 0;width: 250px;height: 70px;right: 10%;}
+    .alert.show{-moz-animation: alert-show 0.6s;-webkit-animation: alert-show 0.6s;top: 0;opacity: 1;}
+    .alert.hide{-moz-animation: alert-hide 0.6s;-webkit-animation: alert-hide 0.6s;top:-30px;opacity: 0;}
+    .alert .alert-bg{width: 250px;height: 70px;background: #FFF;opacity: 0.8;position: absolute;left: 0;top:0;}
+    .alert .alert-text{position: absolute;left: 0;top:0;width: 250px;height: 70px;text-align: center;line-height: 70px;font-size: 1.5em;color: #c16a10;}

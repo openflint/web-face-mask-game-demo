@@ -30,6 +30,26 @@ var isFirefoxOs = typeof(MozActivity)=="undefined"?false:true;
 var masks = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 
 ////////////////common app control code///////////////////////////
+
+var AlertBox = function(){
+    self = this;
+    var box = document.getElementById("alert"),
+        alertText = document.getElementById("alert-text");
+
+    self.show = function(text){
+        box.className = "alert show";
+        alertText.innerHTML = text;
+        setTimeout(function(){
+            self.hide();
+        },5000);
+    };
+
+    self.hide = function(text){
+        box.className = "alert hide";
+    }
+};
+var alertBox = new AlertBox();
+
 window.appManager = null;
 var AppManager = function(appid){
     var self = this;
@@ -51,7 +71,7 @@ var AppManager = function(appid){
         eleOpenBtn = document.getElementById("open-btn"),
         eleDongleIpInput = document.getElementById("dongle-ip-input");
 
-    self.showAlert = function(msg){
+    self.showError = function(msg){
         errtext.innerHTML = msg;
         errmsgbox.style.left = (window.windowWidth-250)/2+"px";
         errmsgbox.style.top = (window.windowHeight-50)/2+"px";
@@ -59,7 +79,7 @@ var AppManager = function(appid){
         errbox.style.display = "block";
     };
 
-    self.hideAlert = function(){
+    self.hideError = function(){
         errbox.onclick = function(){
             errtext.innerHTML = "";
             errbox.style.display = "none";
@@ -79,7 +99,7 @@ var AppManager = function(appid){
         if(eleDongleIpInput.value!=""){
             var patrn =/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
             if(!patrn.exec(eleDongleIpInput.value) ){ 
-                self.showAlert("IP address error");
+                self.showError("IP address error");
                 return;
             }
             // I can not get CROS error. so you must confirmed the ip address right
@@ -94,14 +114,14 @@ var AppManager = function(appid){
                 msgChannel = messageChannel;
                 msgChannel.on("message", function(jsonObject){
                     if("data" in jsonObject){
-                        ("onmessage" in self)&&(self.onmessage(jsonObject["data"]));
+                        ("onmessage" in self)&&(self.onmessage(jsonObject));
                     }
                 });
             });
             senderDaemon.openApp(appUrl, -1, true);
             return;
         }else{
-            self.showAlert("IP address error");
+            self.showError("IP address error");
         }
     }
 
@@ -118,7 +138,7 @@ var AppManager = function(appid){
         }
     };
 
-    self.hideAlert();
+    self.hideError();
     eleDongleIpInput.focus();
 }
 
@@ -137,7 +157,6 @@ function imageEncode(img, imgw, imgh){
     canvas.height = imgh;
     context.drawImage(img, 0, 0, imgw, imgh);
     var dataURL = canvas.toDataURL("image/png");
-    console.info(img.width, img.height);
     return {
         'type' : 'img',
         'data' : dataURL,
@@ -149,6 +168,7 @@ function imageEncode(img, imgw, imgh){
 **/
 var BrowserCamera = function(){
     var self = this;
+    self.waiting = false;
     var video = document.getElementById("video"),
         btnCapture = document.getElementById("btn-capture-browser"),
         camera_stream = null,
@@ -172,27 +192,41 @@ var BrowserCamera = function(){
     self.stop = function(){
         video.pause();
     };
+    self.play = function(){
+        video.play();
+        btnCapture.className = "btn-capture";
+        self.waiting = false;
+    };
 
     self.snap = function(){
         var data = imageEncode(video);
-        console.info("-----------------------------snap------------->", JSON.stringify(data));
-    
         window.appManager.send(JSON.stringify(data));
         self.stop();
     }
 
     btnCapture.onclick = function(){
-        console.info("----------1----------");
-        self.snap();
+        if(!self.waiting){
+            alertBox.show("Waiting...");
+            btnCapture.className = "btn-capture on";
+            self.waiting = true;
+            self.snap();
+        }
     };
 };
 
 var PhoneCamera = function(){
     var self = this;
+    self.waiting = false;
 
     var btnCapture = document.getElementById("btn-capture-ffphone");
 
     btnCapture.onclick = function(){
+        if(self.waiting){
+            return;
+        }
+        alertBox.show("Waiting...");
+        btnCapture.className = "btn-capture on";
+        self.waiting = true;
         var pick = new MozActivity({
            name: "pick",
            data: {
@@ -204,7 +238,6 @@ var PhoneCamera = function(){
             var img = document.createElement("img"),
                 pixArea = document.getElementById("pix-area"),
                 ffphoneCapture = document.getElementById("ffphone-capture");
-            console.info(this.result.blob);
             img.src = window.URL.createObjectURL(this.result.blob);
             img.width = 320;
             img.height = 435;
@@ -217,6 +250,11 @@ var PhoneCamera = function(){
         pick.onerror = function () {
             console.info("Can't view the image!");
         };
+    };
+
+    self.play = function(){
+        btnCapture.className = "btn-capture";
+        self.waiting = false;
     };
 };
 
@@ -239,7 +277,6 @@ var GamePageView = function(){
         masksInner.innerHTML = html;
 
         var maskItems = getElementsByClass("mask-item", "div");
-        console.info(maskItems);
         for(var i=0;i<maskItems.length;i++){
             maskItems[i].onclick = function(){
                 var data = {
@@ -275,13 +312,38 @@ var GamePageView = function(){
 window.onload = function(){
     var gamePageView = new GamePageView();
     gamePageView.init();
-
+    var phoneCamera = null,
+        browserCamera = null;
     window.appManager = new AppManager("~facemaskgame");
     window.appManager.on("appopened", function(){
         if(isFirefoxOs){
-            var camera = new PhoneCamera();
+            phoneCamera = new PhoneCamera();
         }else{
-            var camera = new BrowserCamera();
+            browserCamera = new BrowserCamera();
+        }
+    });
+    window.appManager.on("message", function(msg){
+        switch(msg.type){
+            case "game_status":
+                if(msg.data=="FACE_FOUND"){
+                    alertBox.show("Face detect success!");
+                }else if(msg.data=="NO_FACE"){
+                    alertBox.show("No face found!");
+                }else if(msg.data=="NET_ERROR"){
+                    alertBox.show("Network error!");
+                }
+                if(msg.data=="FACE_FOUND"||msg.data=="NO_FACE"||msg.data=="NET_ERROR"){
+                    console.info("------------------------------->",msg.type, msg.data);
+                    if(browserCamera){
+                        browserCamera.play();
+                    }
+                    if(phoneCamera){
+                        phoneCamera.play();
+                    }
+                }
+                break;
+            default:
+                break;
         }
     });
 };
