@@ -117,7 +117,7 @@ var FaceppSDK = function(){
                 appControl.send({"type": "game_status", "data": gameStatus});
                 return;
             }
-                self.result = result
+            self.result = result;
             ("onresult" in self)&& (self.onresult(result));
         });
     };
