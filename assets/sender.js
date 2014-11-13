@@ -257,13 +257,28 @@ var PhoneCamera = function(){
                 pixArea = document.getElementById("pix-area"),
                 ffphoneCapture = document.getElementById("ffphone-capture");
             img.src = window.URL.createObjectURL(this.result.blob);
-            img.width = 320;
-            img.height = 435;
+            pixArea.innerHTML = "";
             
-            pixArea.appendChild(img);
-            
-            var data = imageEncode(img);
-            window.appManager.send(JSON.stringify(data));
+            img.onload = function() {
+                var imgw = 640;
+                var imgh = parseInt(img.height*imgw/img.width);
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = imgw;
+                canvas.height = imgh;
+
+                ctx.drawImage(img, 0, 0, imgw, imgh);
+
+                canvas.style.width = imgw/2+"px";
+                canvas.style.height = imgh/2+"px";
+                pixArea.appendChild(canvas);
+                var dataURL = canvas.toDataURL("image/png");
+                var data = {
+                    'type': 'img',
+                    'data': dataURL,
+                };
+                window.appManager.send(JSON.stringify(data));
+            }
         };
         pick.onerror = function () {
             console.info("Can't view the image!");
@@ -351,7 +366,6 @@ window.onload = function(){
                     alertBox.show("Network error!");
                 }
                 if(msg.data=="FACE_FOUND"||msg.data=="NO_FACE"||msg.data=="NET_ERROR"){
-                    console.info("------------------------------->",msg.type, msg.data);
                     if(browserCamera){
                         browserCamera.play();
                     }

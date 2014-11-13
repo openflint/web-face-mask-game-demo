@@ -19,7 +19,7 @@ function postImage(imgdata, callback){
     var formData = new FormData();
     formData.append("img", imgdata);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:8090/test.php");
+    xhr.open("POST", "http://10.0.0.105:8090/test.php");
 
     xhr.onreadystatechange = function() {
         var response;
@@ -101,7 +101,7 @@ var FaceppSDK = function(){
         //         appControl.send({"type": "game_status", "data": gameStatus});
         //         return;
         //     }
-        //     self.result = result
+        //     self.result = result;
         //     console.info("..................................>>", result);
         //     ("onresult" in self)&& (self.onresult(result));
         // });
@@ -117,6 +117,7 @@ var FaceppSDK = function(){
                 appControl.send({"type": "game_status", "data": gameStatus});
                 return;
             }
+                self.result = result
             ("onresult" in self)&& (self.onresult(result));
         });
     };
