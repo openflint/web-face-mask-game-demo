@@ -192,6 +192,7 @@ var SenderDaemon = function(deviceIp, appid){
             ];
 
         self.simpleHttpRequest("GET", headers, serverAddress, null, function(responseText){
+            console.info("----------------------------------responseText: ", responseText);
             var lines = responseText.split('\n');
             lines.splice(0,1);
             responseText = lines.join('');
@@ -215,7 +216,11 @@ var SenderDaemon = function(deviceIp, appid){
                 if(items){
                     for(var i=0;i<items.length;i++){
                         if(items[i].tagName){
-                            self.additionalDatas[items[i].tagName] = items[i].innerHTML;
+                            if(typeof(items[i].innerHTML)=="undefined"){
+                                self.additionalDatas[items[i].tagName] = items[i].textContent;
+                            }else{
+                                self.additionalDatas[items[i].tagName] = items[i].innerHTML;
+                            }
                         }
                     }
                 }
