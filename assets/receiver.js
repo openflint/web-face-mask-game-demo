@@ -41,7 +41,7 @@ function postImage(imgdata, callback){
 }
 
 var AlertBox = function(){
-    self = this;
+    var self = this;
     var box = document.getElementById("alert"),
         alertText = document.getElementById("alert-text");
 
