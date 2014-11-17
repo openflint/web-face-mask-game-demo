@@ -19,7 +19,7 @@ function postImage(imgdata, callback){
     var formData = new FormData();
     formData.append("img", imgdata);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://10.0.0.105:8090/test.php");
+    xhr.open("POST", "http://182.92.81.74/test.php");
 
     xhr.onreadystatechange = function() {
         var response;
@@ -95,31 +95,31 @@ var FaceppSDK = function(){
 
     self.result = null;
     self.detect = function(imgdata){
-        // postImage(imgdata, function(err, result){
-        //     if (err) {
-        //         gameStatus = "NET_ERROR";
-        //         appControl.send({"type": "game_status", "data": gameStatus});
-        //         return;
-        //     }
-        //     self.result = result;
-        //     console.info("..................................>>", result);
-        //     ("onresult" in self)&& (self.onresult(result));
-        // });
-        
-        var api = new FacePP(apiKey, apiSecret);
-        api.request("detection/detect", {
-            img: imgdata
-
-        }, function(err, result){
+        postImage(imgdata, function(err, result){
             if (err) {
-                console.info(err);
                 gameStatus = "NET_ERROR";
                 appControl.send({"type": "game_status", "data": gameStatus});
                 return;
             }
             self.result = result;
+            console.info("..................................>>", result);
             ("onresult" in self)&& (self.onresult(result));
         });
+        
+        // var api = new FacePP(apiKey, apiSecret);
+        // api.request("detection/detect", {
+        //     img: imgdata
+
+        // }, function(err, result){
+        //     if (err) {
+        //         console.info(err);
+        //         gameStatus = "NET_ERROR";
+        //         appControl.send({"type": "game_status", "data": gameStatus});
+        //         return;
+        //     }
+        //     self.result = result;
+        //     ("onresult" in self)&& (self.onresult(result));
+        // });
     };
 
     self.on = function(type, func){
