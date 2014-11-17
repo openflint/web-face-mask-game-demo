@@ -183,27 +183,41 @@ var Mask = function(){
                 var num = Math.floor(Math.random()*18)+1;
                 maskId = num;
             }
+            var eyesCount = 0;
             imgEyeLeft.src = "assets/imgs/eyes/"+maskId+"-L.png";
             imgEyeRight.src = "assets/imgs/eyes/"+maskId+"-R.png";
-            self.drawImage();
-            for(var i=0; i<result.face.length; i++){
-                var face = result.face[i];
-                var faceWidth = face.position.width*result.img_width/100,
-                    faceHeight = face.position.height*result.img_height/100;
-                var ew = faceWidth*0.4,
-                    eh = faceHeight*0.4;
 
-                var eyePosition = {};
-                    eyePosition.leftX = face.position.eye_left.x*result.img_width/100 - ew/2;
-                    eyePosition.leftY = face.position.eye_left.y*result.img_height/100 - eh/2;
+            function eyesLoaded(){
+                if(eyesCount>=2){
+                    self.drawImage();
+                    for(var i=0; i<result.face.length; i++){
+                        var face = result.face[i];
+                        var faceWidth = face.position.width*result.img_width/100,
+                            faceHeight = face.position.height*result.img_height/100;
+                        var ew = faceWidth*0.4,
+                            eh = faceHeight*0.4;
 
-                    eyePosition.rightX = face.position.eye_right.x*result.img_width/100 - ew/2;
-                    eyePosition.rightY = face.position.eye_right.y*result.img_height/100 - eh/2;
-                    setTimeout(function(){
-                        ctx.drawImage(imgEyeLeft, eyePosition.leftX, eyePosition.leftY, ew, eh);
-                        ctx.drawImage(imgEyeRight, eyePosition.rightX, eyePosition.rightY, ew, eh);
-                    },100);
-            }
+                        var eyePosition = {};
+                            eyePosition.leftX = face.position.eye_left.x*result.img_width/100 - ew/2;
+                            eyePosition.leftY = face.position.eye_left.y*result.img_height/100 - eh/2;
+
+                            eyePosition.rightX = face.position.eye_right.x*result.img_width/100 - ew/2;
+                            eyePosition.rightY = face.position.eye_right.y*result.img_height/100 - eh/2;
+                            setTimeout(function(){
+                                ctx.drawImage(imgEyeLeft, eyePosition.leftX, eyePosition.leftY, ew, eh);
+                                ctx.drawImage(imgEyeRight, eyePosition.rightX, eyePosition.rightY, ew, eh);
+                            },100);
+                    }
+                }
+            };
+            imgEyeLeft.onload = function(){
+                eyesCount+=1;
+                eyesLoaded();
+            };
+            imgEyeRight.onload = function(){
+                eyesCount+=1;
+                eyesLoaded();
+            };
         }else{
             alertBox.show("Face found");
             self.setBackground(result);
