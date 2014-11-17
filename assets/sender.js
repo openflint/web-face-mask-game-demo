@@ -166,10 +166,10 @@ function imageEncode(img, imgw, imgh){
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
     if(typeof(imgw)=="undefined"){
-        imgw = 320;
+        imgw = 640;
     }
     if(typeof(imgh)=="undefined"){
-        imgh = 240;
+        imgh = 480;
     }
     canvas.width = imgw;
     canvas.height = imgh;
@@ -260,7 +260,7 @@ var PhoneCamera = function(){
             pixArea.innerHTML = "";
             
             img.onload = function() {
-                var imgw = 640;
+                var imgw = 320;
                 var imgh = parseInt(img.height*imgw/img.width);
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
