@@ -166,10 +166,10 @@ function imageEncode(img, imgw, imgh){
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
     if(typeof(imgw)=="undefined"){
-        imgw = 640;
+        imgw = 320;
     }
     if(typeof(imgh)=="undefined"){
-        imgh = 480;
+        imgh = 240;
     }
     canvas.width = imgw;
     canvas.height = imgh;
