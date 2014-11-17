@@ -260,7 +260,7 @@ var PhoneCamera = function(){
             pixArea.innerHTML = "";
             
             img.onload = function() {
-                var imgw = 320;
+                var imgw = 480;
                 var imgh = parseInt(img.height*imgw/img.width);
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
