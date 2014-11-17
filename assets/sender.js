@@ -232,6 +232,9 @@ var BrowserCamera = function(){
     };
 };
 
+/*
+ * Camera for phone
+ **/
 var PhoneCamera = function(){
     var self = this;
     self.waiting = false;

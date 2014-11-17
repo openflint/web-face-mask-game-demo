@@ -1,9 +1,6 @@
 "use strict"
-/*
-* important set faceplusplus us api url
-**/
 
-// IDEL / SET_IMAGE / IMAGE_DETECTING / NO_FACE / FACE_FOUND
+// IDLE / SET_IMAGE / IMAGE_DETECTING / NO_FACE / FACE_FOUND
 var gameStatus = "IDLE";
 function imageDataFormat(imgData){
     var data = atob(imgData.substring( "data:image/png;base64,".length ));
@@ -106,20 +103,6 @@ var FaceppSDK = function(){
             ("onresult" in self)&& (self.onresult(result));
         });
         
-        // var api = new FacePP(apiKey, apiSecret);
-        // api.request("detection/detect", {
-        //     img: imgdata
-
-        // }, function(err, result){
-        //     if (err) {
-        //         console.info(err);
-        //         gameStatus = "NET_ERROR";
-        //         appControl.send({"type": "game_status", "data": gameStatus});
-        //         return;
-        //     }
-        //     self.result = result;
-        //     ("onresult" in self)&& (self.onresult(result));
-        // });
     };
 
     self.on = function(type, func){

@@ -82,13 +82,6 @@ var SenderDaemon = function(deviceIp, appid){
     self.appHref = null;
     self.additionalDatas = {};
 
-    var wsServer = "ws://"+deviceIp+":9431/receiver/"+appid,
-        ws = null,
-        sender = {
-            "count":0,
-            "list":{}
-        };
-
     self.simpleHttpRequest = function(method, headers, url, data, callback){
         console.info("url: ", url);
         var xhr = new XMLHttpRequest({mozSystem: true});
@@ -268,7 +261,7 @@ var SenderDaemon = function(deviceIp, appid){
         });
     };
 
-    //heigh level launch app interface
+    //high level launch app interface
     self.openApp = function(appUrl, maxInactive, useIpc){
         self.on("applaunched", function(res){
             self.on("statereceived", function(data){
