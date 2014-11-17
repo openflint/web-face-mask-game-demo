@@ -252,6 +252,19 @@ var PhoneCamera = function(){
            }
         });
 
+        self.drawImageToCanvas = function(img, imgw){
+            var imgh = parseInt(img.height*imgw/img.width);
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.width = imgw;
+            canvas.height = imgh;
+
+            ctx.drawImage(img, 0, 0, imgw, imgh);
+
+            canvas.style.width = imgw/2+"px";
+            canvas.style.height = imgh/2+"px";
+            return canvas;
+        };
         pick.onsuccess = function () {
             var img = document.createElement("img"),
                 pixArea = document.getElementById("pix-area"),
@@ -260,18 +273,8 @@ var PhoneCamera = function(){
             pixArea.innerHTML = "";
             
             img.onload = function() {
-                var imgw = 480;
-                var imgh = parseInt(img.height*imgw/img.width);
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                canvas.width = imgw;
-                canvas.height = imgh;
-
-                ctx.drawImage(img, 0, 0, imgw, imgh);
-
-                canvas.style.width = imgw/2+"px";
-                canvas.style.height = imgh/2+"px";
-                pixArea.appendChild(canvas);
+                var canvas = self.drawImageToCanvas(img, 480);
+                pixArea.appendChild(self.drawImageToCanvas(img, 640));
                 var dataURL = canvas.toDataURL("image/png");
                 var data = {
                     'type': 'img',
