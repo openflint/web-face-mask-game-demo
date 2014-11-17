@@ -187,7 +187,7 @@ var Mask = function(){
             imgEyeLeft.src = "assets/imgs/eyes/"+maskId+"-L.png";
             imgEyeRight.src = "assets/imgs/eyes/"+maskId+"-R.png";
 
-            function eyesLoaded(){
+            var eyesLoaded = function(){
                 if(eyesCount>=2){
                     self.drawImage();
                     for(var i=0; i<result.face.length; i++){
