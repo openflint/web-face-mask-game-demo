@@ -32,7 +32,7 @@ var masks = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 ////////////////common app control code///////////////////////////
 
 var AlertBox = function(){
-    self = this;
+    var self = this;
     var box = document.getElementById("alert"),
         alertText = document.getElementById("alert-text");
 
@@ -98,7 +98,8 @@ var AppManager = function(appid){
         if(msgChannel){
             msgChannel.send(data);            
         }
-    }
+    };
+
     self.openApp = function(){
         if(eleDongleIpInput.value!=""){
             var patrn =/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
@@ -125,7 +126,6 @@ var AppManager = function(appid){
             });
 
             senderDaemon.openApp(appUrl, -1, true);
-            return;
         }else{
             self.showError("IP address error");
         }
@@ -137,7 +137,7 @@ var AppManager = function(appid){
 
     self.on = function(type, func){
         self["on"+type] = func;
-    }
+    };
 
     eleOpenBtn.onclick = function(e){
         self.openApp();
@@ -158,7 +158,7 @@ var AppManager = function(appid){
             window.location.reload();
         },1000);
     };
-}
+};
 
 ///////////////////////////////////////////
 
@@ -177,7 +177,7 @@ function imageEncode(img, imgw, imgh){
     var dataURL = canvas.toDataURL("image/png");
     return {
         'type' : 'img',
-        'data' : dataURL,
+        'data' : dataURL
     };
 }
 
@@ -220,7 +220,7 @@ var BrowserCamera = function(){
         var data = imageEncode(video);
         window.appManager.send(JSON.stringify(data));
         self.stop();
-    }
+    };
 
     btnCapture.onclick = function(){
         if(!self.waiting){
@@ -278,7 +278,7 @@ var PhoneCamera = function(){
                 var dataURL = canvas.toDataURL("image/png");
                 var data = {
                     'type': 'img',
-                    'data': dataURL,
+                    'data': dataURL
                 };
                 window.appManager.send(JSON.stringify(data));
             }

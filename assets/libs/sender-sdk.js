@@ -109,7 +109,8 @@ var SenderDaemon = function(deviceIp, appid){
                     console.info("XmlHttpRequest Error", xhr.readyState, xhr.status);
                 }
             }
-        }
+        };
+
         xhr.onerror = function() {
             console.info('error'); 
         };
