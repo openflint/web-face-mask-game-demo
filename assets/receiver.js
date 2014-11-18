@@ -179,17 +179,15 @@ var Mask = function(){
                             faceHeight = face.position.height*result.img_height/100;
                         var ew = faceWidth*0.4,
                             eh = faceHeight*0.4;
-
                         var eyePosition = {};
                             eyePosition.leftX = face.position.eye_left.x*result.img_width/100 - ew/2;
                             eyePosition.leftY = face.position.eye_left.y*result.img_height/100 - eh/2;
 
                             eyePosition.rightX = face.position.eye_right.x*result.img_width/100 - ew/2;
                             eyePosition.rightY = face.position.eye_right.y*result.img_height/100 - eh/2;
-                            setTimeout(function(){
-                                ctx.drawImage(imgEyeLeft, eyePosition.leftX, eyePosition.leftY, ew, eh);
-                                ctx.drawImage(imgEyeRight, eyePosition.rightX, eyePosition.rightY, ew, eh);
-                            },100);
+                            
+                            ctx.drawImage(imgEyeLeft, eyePosition.leftX, eyePosition.leftY, ew, eh);
+                            ctx.drawImage(imgEyeRight, eyePosition.rightX, eyePosition.rightY, ew, eh);
                     }
                 }
             };
