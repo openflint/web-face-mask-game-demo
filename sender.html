@@ -30,9 +30,17 @@
             </div>
 
             <div id="inputarea-bg" class="inputarea bg"></div>
-            <div id ="inputarea" class="inputarea">
+            
+            <div id ="inputarea" class="inputarea hide">
                 <input id="dongle-ip-input" type="text" value="" placeholder="Your matchstick ip..."/>
                 <span id="open-btn" class="open-btn btn">Open!</span>
+            </div>
+
+            <div id="ssdparea" class="inputarea hide">
+                <select id="dlist" class="dlist">
+                    <option value="">Please choose a device</option>
+                </select>
+                <img id="connect-btn" status="0" off="assets/imgs/icon38_off.png" on="assets/imgs/icon38_on.png" src="assets/imgs/icon38_off.png" title="click to connect"/>
             </div>
         </div>
 
@@ -57,6 +65,8 @@
         <div id="close-app-btn" class="close-app-btn hide">Close App</div>
         <div id="open-app-btn" class="open-app-btn hide">Open app</div>
     </body>
+    <script src="//openflint.github.io/flint-web-sdk/out/flint_sender_sdk.min.js"></script>
+    <script src="assets/libs/browser.js"></script>
     <script src="assets/libs/sender-sdk.js"></script>
     <script src="assets/sender.js"></script>
 </html>

@@ -67,17 +67,36 @@ var AppManager = function(appid){
         errtext = document.getElementById("error-text"),
         
         eleInputareaBack = document.getElementById("inputarea-bg"),
-        eleInputarea = document.getElementById("inputarea"),
+        
+        //open app by ip address
         eleOpenBtn = document.getElementById("open-btn"),
         eleDongleIpInput = document.getElementById("dongle-ip-input"),
+        eleInputarea = document.getElementById("inputarea"),
+
+        //open app by ssdp
+        eleConnectBtn = document.getElementById("connect-btn"),
+        eleDonglelist = document.getElementById("dlist"),
+        eleSSDParea = document.getElementById("ssdparea"),
 
         eleCloseAppBtn = document.getElementById("close-app-btn");
 
-        
+    // if(bowser.firefox&&!isFirefoxOs){
+    if(true){
+        var deviceScanner = new FlintDeviceScanner();
+        deviceScanner.on('devicefound', function(_device) {
+            var ip = _device.urlBase.substring(7,_device.urlBase.lastIndexOf(":"));
+            eleDonglelist.innerHTML+='<option value="'+ip+'">'+_device.friendlyName+'</option>';
+        });
+        deviceScanner.start();
+
+        eleSSDParea.className = "inputarea";
+    }else{
+        eleInputarea.className = "inputarea";
+    }
 
     self.showError = function(msg){
         errtext.innerHTML = msg;
-        errmsgbox.style.left = (window.windowWidth-250)/2+"px";
+        errmsgbox.style.left = (window.windowWidth-300)/2+"px";
         errmsgbox.style.top = (window.windowHeight-50)/2+"px";
 
         errbox.style.display = "block";
@@ -100,20 +119,29 @@ var AppManager = function(appid){
         }
     };
 
-    self.openApp = function(){
-        if(eleDongleIpInput.value!=""){
+    /**open receiver app**/
+    self.openApp = function(deviceIp){
+        //
+        if(deviceIp!=""){
             var patrn =/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-            if(!patrn.exec(eleDongleIpInput.value) ){ 
+            if(!patrn.exec(deviceIp) ){ 
                 self.showError("IP address error");
                 return;
             }
             // I can not get CROS error. so you must confirmed the ip address right
-            var deviceIp = eleDongleIpInput.value;
             senderDaemon = new SenderDaemon(deviceIp, appid);
             senderDaemon.on("appopened", function(messageChannel){
                 receiverStatus = "ready";
-                eleInputarea.style.display = "none";
-                eleInputareaBack.style.display = "none";
+
+                if(eleInputarea){
+                    eleInputarea.style.display = "none";
+                }
+                if(eleInputareaBack){
+                    eleInputareaBack.style.display = "none";
+                }
+                if(eleSSDParea){
+                    eleSSDParea.style.display = "none";
+                }
 
                 ("onappopened" in self)&&(self.onappopened());
                 msgChannel = messageChannel;
@@ -139,18 +167,57 @@ var AppManager = function(appid){
         self["on"+type] = func;
     };
 
-    eleOpenBtn.onclick = function(e){
-        self.openApp();
-    };
-    eleDongleIpInput.onkeyup = function(e){
-        if(e.keyCode==13){
-            self.openApp();
-        }
-    };
+    if(eleOpenBtn){
+        eleOpenBtn.onclick = function(e){
+            self.openApp(eleDongleIpInput.value);
+        };    
+    }
+    
+    if(eleDongleIpInput){
+        eleDongleIpInput.onkeyup = function(e){
+            if(e.keyCode==13){
+                self.openApp();
+            }
+        };
+        eleDongleIpInput.focus();
+    }
 
+    if(eleConnectBtn){
+        eleConnectBtn.onclick = function(e){
+            var status = this.getAttribute("status"),
+                options = eleDonglelist.options,
+                dongle = null;
+
+            if(status==0){
+                //connect
+                for(var i = 0 ; i<options.length ;i++) {
+                    var option = options[i];  
+                    if(option.selected) {  
+                        dongle = {
+                            "value": option.value,
+                            "text": option.textContent
+                        };
+                        break;
+                    }  
+                }
+                if(!dongle.value){
+                    self.showError("Please select a device");
+                }else{
+                    this.src = this.getAttribute("on");
+                    this.setAttribute("status", 1);
+                    //todo opan app
+                    self.openApp(dongle.value);
+                }  
+            }else{
+                //disconnect
+                this.src = this.getAttribute("off");
+                this.setAttribute("status", 0);
+            }
+       }
+    }
+    
     self.hideError();
-    eleDongleIpInput.focus();
-
+    
     eleCloseAppBtn.onclick = function(){
         self.closeApp();
         eleCloseAppBtn.className = "close-app-btn hide";
@@ -361,6 +428,7 @@ window.onload = function(){
             browserCamera = new BrowserCamera();
         }
     });
+    
     window.appManager.on("message", function(msg){
         switch(msg.type){
             case "game_status":
