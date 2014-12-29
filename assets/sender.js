@@ -312,9 +312,7 @@ var PhoneCamera = function(){
         if(self.waiting){
             return;
         }
-        alertBox.show("Waiting...");
-        btnCapture.className = "btn-capture on";
-        self.waiting = true;
+        
         var pick = new MozActivity({
            name: "pick",
            data: {
@@ -342,6 +340,10 @@ var PhoneCamera = function(){
             img.src = window.URL.createObjectURL(this.result.blob);
             pixArea.innerHTML = "";
             
+            alertBox.show("Waiting...");
+            self.waiting = true;
+            btnCapture.className = "btn-capture on";
+
             img.onload = function() {
                 var canvas = self.drawImageToCanvas(img, 480);
                 pixArea.appendChild(self.drawImageToCanvas(img, 640));
