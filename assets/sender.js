@@ -82,18 +82,18 @@ var AppManager = function(appid){
 
     // if(bowser.firefox&&!isFirefoxOs){
     if(true){
-        var deviceScanner = new FlintDeviceScanner();
-        deviceScanner.on('devicefound', function(_device) {
-            var ip = _device.urlBase.substring(7,_device.urlBase.lastIndexOf(":"));
-            eleDonglelist.innerHTML+='<option value="'+ip+'">'+_device.friendlyName+'</option>';
-        });
-        deviceScanner.start();
-
+        setTimeout(function(){
+            var deviceScanner = new FlintDeviceScanner();
+            deviceScanner.on('devicefound', function(_device) {
+                var ip = _device.urlBase.substring(7,_device.urlBase.lastIndexOf(":"));
+                eleDonglelist.innerHTML+='<option id="'+ip+'" value="'+ip+'">'+_device.friendlyName+'</option>';
+            });
+            deviceScanner.start();
+        },0);
         eleSSDParea.className = "inputarea";
     }else{
         eleInputarea.className = "inputarea";
     }
-
     self.showError = function(msg){
         errtext.innerHTML = msg;
         errmsgbox.style.left = (window.windowWidth-300)/2+"px";

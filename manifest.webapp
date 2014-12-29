@@ -14,6 +14,7 @@
     "default_locale": "en",
     "type": "privileged",
     "permissions": {
+        "udp-socket": { "description": "Used for ssdp implementation." },
         "systemXHR": { "description": "Required to make Ajax Calls over the Network" }
     },
     "orientation":["portrait-primary"]
