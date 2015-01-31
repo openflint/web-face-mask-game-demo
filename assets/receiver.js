@@ -16,8 +16,7 @@ function postImage(imgdata, callback){
     var formData = new FormData();
     formData.append("img", imgdata);
     var xhr = new XMLHttpRequest();
-    // xhr.open("POST", "http://182.92.81.74/test.php");
-    xhr.open("POST", "http://www.openflint.org/test.php");
+    xhr.open("POST", "http://182.92.81.74/test.php");
 
     xhr.onreadystatechange = function() {
         var response;
